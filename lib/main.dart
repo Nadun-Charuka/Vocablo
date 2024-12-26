@@ -97,6 +97,7 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
         body: PageView.builder(
+          physics: const NeverScrollableScrollPhysics(),
           controller: controller,
           itemBuilder: (context, index) {
             return _pages[_currentIndex];
