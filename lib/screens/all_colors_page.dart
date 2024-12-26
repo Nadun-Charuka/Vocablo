@@ -1,4 +1,7 @@
+// lib/pages/all_colors_page.dart
+
 import 'package:flutter/material.dart';
+import '../constants/colors.dart'; // Import the colors.dart file
 
 class AllColorsPage extends StatelessWidget {
   const AllColorsPage({super.key});
@@ -7,18 +10,20 @@ class AllColorsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF1DE9B6), // Vibrant Teal
-        title:
-            Text('Vocablo App', style: Theme.of(context).textTheme.titleLarge),
+        backgroundColor: kVibrantTeal, // Using color constant
+        title: Text(
+          'Vocablo App',
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
         leading: IconButton(
           icon: const Icon(Icons.menu),
-          color: const Color(0xFF3D5AFE), // Light Indigo
+          color: kLightIndigo, // Using color constant
           onPressed: () {},
         ),
         actions: [
           IconButton(
             icon: const Icon(Icons.search),
-            color: const Color(0xFF3D5AFE), // Light Indigo
+            color: kLightIndigo, // Using color constant
             onPressed: () {},
           ),
         ],
@@ -27,25 +32,31 @@ class AllColorsPage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         children: [
           // **Different Sizes of Text**
-          Text('Welcome to Vocablo',
-              style: Theme.of(context).textTheme.titleLarge),
+          Text(
+            'Welcome to Vocablo',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
           const SizedBox(height: 10),
-          Text('Learning Vocabulary Made Fun!',
-              style: Theme.of(context).textTheme.bodyMedium),
+          Text(
+            'Learning Vocabulary Made Fun!',
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
           const SizedBox(height: 20),
 
           // **Buttons**
           ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFFF6F61)),
+              backgroundColor: kCoralButton, // Using color constant
+            ),
             child: const Text('Primary Action'), // Coral Button Color
           ),
           const SizedBox(height: 10),
           ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFA5E1D5)),
+              backgroundColor: kLightTealButton, // Using color constant
+            ),
             child: const Text('Secondary Action'), // Light Teal Button
           ),
           const SizedBox(height: 20),
@@ -55,7 +66,7 @@ class AllColorsPage extends StatelessWidget {
             onTap: () {},
             child: const Text(
               'Click here for more info',
-              style: TextStyle(color: Color(0xFF1DE9B6)), // Teal for links
+              style: TextStyle(color: kTealLink), // Using color constant
             ),
           ),
           const SizedBox(height: 20),
@@ -63,14 +74,19 @@ class AllColorsPage extends StatelessWidget {
           // **Warning Messages**
           Container(
             padding: const EdgeInsets.all(16.0),
-            color: const Color(0xFFF9E79F), // Light Yellow (Warning)
+            color: kLightYellowWarning, // Using color constant
             child: const Row(
               children: [
-                Icon(Icons.warning, color: Colors.orange),
+                Icon(Icons.warning,
+                    color: kWarningIconColor), // Using color constant
                 SizedBox(width: 8),
                 Expanded(
-                    child: Text('This is a warning message',
-                        style: TextStyle(color: Color(0xFF2F4F4F)))),
+                  child: Text(
+                    'This is a warning message',
+                    style: TextStyle(
+                        color: kDarkSlateGray), // Using color constant
+                  ),
+                ),
               ],
             ),
           ),
@@ -78,17 +94,21 @@ class AllColorsPage extends StatelessWidget {
 
           // **Cards**
           Card(
-            color: const Color(0xFFF1F1F1), // Soft Light Gray Card Background
+            color: kSoftLightGray, // Using color constant
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Card Title',
-                      style: Theme.of(context).textTheme.titleLarge),
+                  Text(
+                    'Card Title',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
                   const SizedBox(height: 10),
-                  Text('This is some content inside the card.',
-                      style: Theme.of(context).textTheme.bodyLarge),
+                  Text(
+                    'This is some content inside the card.',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
                 ],
               ),
             ),
@@ -102,12 +122,18 @@ class AllColorsPage extends StatelessWidget {
               itemCount: 5,
               itemBuilder: (context, index) {
                 return ListTile(
-                  leading: const Icon(Icons.check_circle,
-                      color: Color(0xFF1DE9B6)), // Vibrant Teal
-                  title: Text('List Item ${index + 1}',
-                      style: Theme.of(context).textTheme.bodyLarge),
-                  subtitle: Text('Details of item ${index + 1}',
-                      style: Theme.of(context).textTheme.bodySmall),
+                  leading: const Icon(
+                    Icons.check_circle,
+                    color: kVibrantTeal, // Using color constant
+                  ),
+                  title: Text(
+                    'List Item ${index + 1}',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  subtitle: Text(
+                    'Details of item ${index + 1}',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
                 );
               },
             ),
@@ -117,19 +143,22 @@ class AllColorsPage extends StatelessWidget {
           // **Progress Bar**
           Column(
             children: [
-              Text('Loading...', style: Theme.of(context).textTheme.bodyMedium),
+              Text(
+                'Loading...',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
               const SizedBox(height: 10),
               const LinearProgressIndicator(
                 value: 0.5,
-                color: Color(0xFF1DE9B6), // Vibrant Teal
-                backgroundColor: Color(0xFFF1F1F1), // Soft Light Gray
+                color: kVibrantTeal, // Using color constant
+                backgroundColor: kSoftLightGray, // Using color constant
               ),
             ],
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color(0xFF1DE9B6), // Vibrant Teal
+        backgroundColor: kVibrantTeal, // Using color constant
         child: const Icon(Icons.add),
         onPressed: () {},
       ),
