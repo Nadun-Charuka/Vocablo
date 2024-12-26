@@ -4,6 +4,7 @@ import 'package:vocablo_app/screens/practice_screen.dart';
 import 'package:vocablo_app/screens/add_new_screen.dart';
 import 'package:vocablo_app/screens/profile_screen.dart';
 import 'package:vocablo_app/screens/shared_state.dart';
+import 'package:vocablo_app/widgets/custom_animated_bottomappbar.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -57,44 +58,12 @@ class _MyAppState extends State<MyApp> {
         ),
         resizeToAvoidBottomInset: false,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        bottomNavigationBar: BottomAppBar(
-          height: kBottomNavigationBarHeight,
-          color: kVibrantTeal,
-          shape: CircularNotchedRectangle(),
-          notchMargin: 8,
-          child: Row(
-            children: [
-              Spacer(
-                flex: 1,
-              ),
-              IconButton(
-                onPressed: () {
-                  nextPage(0);
-                },
-                icon: Icon(
-                  Icons.menu_book,
-                  size: 30,
-                  color: _currentIndex == 0 ? Colors.black : kCharcoalGray,
-                ),
-              ),
-              Spacer(
-                flex: 8,
-              ),
-              IconButton(
-                onPressed: () {
-                  nextPage(2);
-                },
-                icon: Icon(
-                  Icons.person_2,
-                  size: 30,
-                  color: _currentIndex == 2 ? Colors.black : kCharcoalGray,
-                ),
-              ),
-              Spacer(
-                flex: 1,
-              ),
-            ],
-          ),
+        bottomNavigationBar: AnimatedBottomAppBar(
+          currentIndex: _currentIndex,
+          onTap: (index) {
+            setState(() => _currentIndex = index);
+            controller.jumpToPage(index);
+          },
         ),
         body: PageView.builder(
           physics: const NeverScrollableScrollPhysics(),
