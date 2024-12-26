@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:translator/translator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vocablo_app/widgets/custom_appbar.dart';
 import 'shared_state.dart'; // Import shared state
+import 'dart:convert';
 
 class AddNewScreen extends StatefulWidget {
   @override
@@ -16,6 +19,36 @@ class _AddNewScreenState extends State<AddNewScreen> {
   String _toLanguage = 'si'; // Default: Sinhala
 
   String _currentTranslatedWord = ""; // Holds the current translation
+
+  @override
+  void initState() {
+    super.initState();
+    _loadTranslationsFromLocalStorage(); // Load translations on init
+  }
+
+  // Load translations from SharedPreferences
+  Future<void> _loadTranslationsFromLocalStorage() async {
+    final prefs = await SharedPreferences.getInstance();
+    final storedData = prefs.getString('translations');
+    if (storedData != null) {
+      final List<dynamic> decodedData = jsonDecode(storedData);
+      if (mounted) {
+        // Ensure the widget is still mounted
+        setState(() {
+          sharedState.translations.clear();
+          sharedState.translations.addAll(
+              decodedData.map((item) => Map<String, String>.from(item)));
+        });
+      }
+    }
+  }
+
+  // Save translations to SharedPreferences
+  Future<void> _saveTranslationsToLocalStorage() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String encodedData = jsonEncode(sharedState.translations);
+    await prefs.setString('translations', encodedData);
+  }
 
   void _swapLanguages() {
     setState(() {
@@ -34,17 +67,23 @@ class _AddNewScreenState extends State<AddNewScreen> {
         from: _fromLanguage,
         to: _toLanguage,
       );
-      setState(() {
-        _currentTranslatedWord = translation.text;
-      });
+
+      // Check if the widget is still mounted before calling setState
+      if (mounted) {
+        setState(() {
+          _currentTranslatedWord = translation.text;
+        });
+      }
     } else {
-      setState(() {
-        _currentTranslatedWord = "";
-      });
+      if (mounted) {
+        setState(() {
+          _currentTranslatedWord = "";
+        });
+      }
     }
   }
 
-  void _addToList() {
+  void _addToList() async {
     if (_textController.text.isNotEmpty && _currentTranslatedWord.isNotEmpty) {
       setState(() {
         sharedState.translations.add({
@@ -54,6 +93,12 @@ class _AddNewScreenState extends State<AddNewScreen> {
         _textController.clear();
         _currentTranslatedWord = "";
       });
+      await sharedState.saveToLocalStorage();
+
+      // Ensure no setState is called after dispose
+      if (mounted) {
+        setState(() {});
+      }
     }
   }
 
@@ -143,11 +188,38 @@ class _AddNewScreenState extends State<AddNewScreen> {
                   color: Colors.teal.shade50,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Text(
-                  _currentTranslatedWord.isNotEmpty
-                      ? _currentTranslatedWord
-                      : "",
-                  style: const TextStyle(fontSize: 35),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Display the translated word
+                    Expanded(
+                      child: Text(
+                        _currentTranslatedWord.isNotEmpty
+                            ? _currentTranslatedWord
+                            : "",
+                        style: const TextStyle(fontSize: 35),
+                        overflow: TextOverflow
+                            .ellipsis, // Handle long text gracefully
+                      ),
+                    ),
+                    // Copy to Clipboard Icon
+                    IconButton(
+                      onPressed: () {
+                        if (_currentTranslatedWord.isNotEmpty) {
+                          Clipboard.setData(
+                              ClipboardData(text: _currentTranslatedWord));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content:
+                                  Text("Translated word copied to clipboard!"),
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                        }
+                      },
+                      icon: const Icon(Icons.copy, color: Colors.teal),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 20),
@@ -171,6 +243,7 @@ class _AddNewScreenState extends State<AddNewScreen> {
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: sharedState.latestTranslations.length,
+                reverse: true,
                 itemBuilder: (context, index) {
                   final item = sharedState.latestTranslations[index];
                   return Card(

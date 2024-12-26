@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 
 /// Primary Colors
 const Color kVibrantTeal = Color(0xFF1DE9B6);

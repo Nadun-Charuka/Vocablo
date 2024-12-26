@@ -3,8 +3,11 @@ import 'package:vocablo_app/constants/colors.dart';
 import 'package:vocablo_app/screens/practice_screen.dart';
 import 'package:vocablo_app/screens/add_new_screen.dart';
 import 'package:vocablo_app/screens/profile_screen.dart';
+import 'package:vocablo_app/screens/shared_state.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await sharedState.loadFromLocalStorage(); // Load stored translations
   runApp(const MyApp());
 }
 
