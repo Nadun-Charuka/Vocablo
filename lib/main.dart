@@ -20,7 +20,7 @@ class _MyAppState extends State<MyApp> {
   PageController controller = PageController();
 
   final List<Widget> _pages = [
-    const PracticeScreen(),
+    PracticeScreen(),
     AddNewScreen(),
     const ProfileScreen(),
   ];

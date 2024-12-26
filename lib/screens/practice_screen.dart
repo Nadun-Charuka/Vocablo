@@ -1,23 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:vocablo_app/widgets/custom_appbar.dart';
+import 'shared_state.dart'; // Import shared state
 
 class PracticeScreen extends StatelessWidget {
-  const PracticeScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppbar(),
-      body: const Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(
-            child: Text(
-              "Practice page",
-              style: TextStyle(fontSize: 30),
+      appBar: AppBar(
+        title: const Text("Practice"),
+        backgroundColor: Colors.teal,
+      ),
+      body: ListView.builder(
+        itemCount: sharedState.olderTranslations.length,
+        itemBuilder: (context, index) {
+          final item = sharedState.olderTranslations[index];
+          return Card(
+            color: Colors.grey.shade200,
+            margin: const EdgeInsets.symmetric(vertical: 5),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Text(
+                "${item['original']} - ${item['translated']}",
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black,
+                ),
+              ),
             ),
-          )
-        ],
+          );
+        },
       ),
     );
   }

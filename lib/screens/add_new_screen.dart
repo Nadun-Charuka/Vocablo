@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:translator/translator.dart';
 import 'package:vocablo_app/widgets/custom_appbar.dart';
+import 'shared_state.dart'; // Import shared state
 
 class AddNewScreen extends StatefulWidget {
   @override
@@ -15,7 +16,6 @@ class _AddNewScreenState extends State<AddNewScreen> {
   String _toLanguage = 'si'; // Default: Sinhala
 
   String _currentTranslatedWord = ""; // Holds the current translation
-  List<Map<String, String>> _translations = []; // ListView storage
 
   void _swapLanguages() {
     setState(() {
@@ -47,7 +47,7 @@ class _AddNewScreenState extends State<AddNewScreen> {
   void _addToList() {
     if (_textController.text.isNotEmpty && _currentTranslatedWord.isNotEmpty) {
       setState(() {
-        _translations.add({
+        sharedState.translations.add({
           "original": _textController.text,
           "translated": _currentTranslatedWord,
         });
@@ -166,13 +166,13 @@ class _AddNewScreenState extends State<AddNewScreen> {
               ),
               const SizedBox(height: 10),
 
-              // Translation List
+              // Translation List (Latest 5 Words)
               ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: _translations.length,
+                itemCount: sharedState.latestTranslations.length,
                 itemBuilder: (context, index) {
-                  final item = _translations[index];
+                  final item = sharedState.latestTranslations[index];
                   return Card(
                     color: Colors.grey.shade200,
                     margin: const EdgeInsets.symmetric(vertical: 5),
