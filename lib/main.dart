@@ -49,7 +49,7 @@ class _MyAppState extends State<MyApp> {
           child: Icon(
             Icons.add,
             color: _currentIndex == 1 ? Colors.black : kCharcoalGray,
-            size: 30,
+            size: 40,
           ),
         ),
         resizeToAvoidBottomInset: false,
