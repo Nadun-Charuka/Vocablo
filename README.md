@@ -1,6 +1,6 @@
 # vocablo_app
 
-A new Flutter project.
+A new Flutter project.Vocablo helps to improve vocabulary in many laguages.
 
 ## Getting Started
 
