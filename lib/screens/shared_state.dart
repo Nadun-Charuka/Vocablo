@@ -21,7 +21,7 @@ class SharedState {
   Future<void> saveToLocalStorage() async {
     final prefs = await SharedPreferences.getInstance();
     // Convert the translations list to JSON and save it
-    prefs.setString(_storageKey, jsonEncode(translations));
+    await prefs.setString(_storageKey, jsonEncode(translations));
   }
 
   // Load data from SharedPreferences
@@ -40,6 +40,14 @@ class SharedState {
   // Add a new translation and save it
   Future<void> addTranslation(String original, String translated) async {
     translations.add({"original": original, "translated": translated});
+    await saveToLocalStorage();
+  }
+
+  // Delete a translation and save changes
+  Future<void> deleteTranslation(Map<String, String> translation) async {
+    translations.removeWhere((item) =>
+        item['original'] == translation['original'] &&
+        item['translated'] == translation['translated']);
     await saveToLocalStorage();
   }
 }

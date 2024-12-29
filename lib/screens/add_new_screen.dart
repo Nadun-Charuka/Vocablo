@@ -218,11 +218,16 @@ class _AddNewScreenState extends State<AddNewScreen> {
                         if (_currentTranslatedWord.isNotEmpty) {
                           Clipboard.setData(
                               ClipboardData(text: _currentTranslatedWord));
+
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
+                            SnackBar(
                               content:
                                   Text("Translated word copied to clipboard!"),
-                              duration: Duration(seconds: 2),
+                              behavior: SnackBarBehavior
+                                  .floating, // Make Snackbar float
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
                             ),
                           );
                         }

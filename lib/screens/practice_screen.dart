@@ -47,6 +47,30 @@ class _PracticeScreenState extends State<PracticeScreen> {
     });
   }
 
+  void _deleteTranslation(Map<String, String> item) async {
+    // Remove the item from the shared state
+    sharedState.translations.removeWhere((translation) =>
+        translation['original'] == item['original'] &&
+        translation['translated'] == item['translated']);
+
+    // Save the updated list to local storage
+    await sharedState.saveToLocalStorage();
+
+    // Update the filtered list based on the current search query
+    _filterTranslations();
+
+    // Optionally, show a snackbar notification
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("Word deleted"),
+        behavior: SnackBarBehavior.floating, // Make Snackbar float
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,30 +111,54 @@ class _PracticeScreenState extends State<PracticeScreen> {
                           Expanded(
                             child: Text(
                               "${item['original']} - ${item['translated']}",
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color:
+                                        Theme.of(context).colorScheme.onSurface,
+                                  ),
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                          // Copy to Clipboard Icon
-                          IconButton(
-                            onPressed: () {
-                              // Copy the text to clipboard
-                              Clipboard.setData(ClipboardData(
-                                  text:
-                                      "${item['original']} - ${item['translated']}"));
-                              // Show a snackbar notification
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text("Text copied to clipboard!"),
-                                  duration: Duration(seconds: 2),
-                                ),
-                              );
-                            },
-                            icon: const Icon(Icons.copy, color: Colors.teal),
+                          Row(
+                            children: [
+                              // Copy to Clipboard Icon
+                              IconButton(
+                                onPressed: () {
+                                  // Copy the text to clipboard
+                                  Clipboard.setData(ClipboardData(
+                                      text:
+                                          "${item['original']} - ${item['translated']}"));
+                                  // Show a snackbar notification
+
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content:
+                                          Text("Text copied to clipboard!"),
+                                      behavior: SnackBarBehavior
+                                          .floating, // Make Snackbar float
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                    ),
+                                  );
+                                },
+                                icon:
+                                    const Icon(Icons.copy, color: Colors.teal),
+                              ),
+                              // Delete Icon
+                              IconButton(
+                                onPressed: () {
+                                  _deleteTranslation(item);
+                                },
+                                icon:
+                                    const Icon(Icons.close, color: Colors.red),
+                              ),
+                            ],
                           ),
                         ],
                       ),
