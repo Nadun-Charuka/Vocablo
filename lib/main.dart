@@ -1,25 +1,54 @@
+// main.dart
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:vocablo_app/constants/colors.dart';
+
+import 'package:vocablo_app/constants/theme.dart';
 import 'package:vocablo_app/screens/practice_screen.dart';
 import 'package:vocablo_app/screens/add_new_screen.dart';
 import 'package:vocablo_app/screens/profile_screen.dart';
 import 'package:vocablo_app/screens/shared_state.dart';
 import 'package:vocablo_app/widgets/custom_animated_bottomappbar.dart';
 
+import 'package:vocablo_app/widgets/theme_provider.dart'; // Import ThemeProvider
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await sharedState.loadFromLocalStorage(); // Load stored translations
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ThemeProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
+  // Changed to StatelessWidget
   const MyApp({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: lightTheme, // Defined in theme.dart
+      darkTheme: darkTheme, // Defined in theme.dart
+      themeMode: themeProvider.themeMode, // Managed by ThemeProvider
+      home: const MainScreen(),
+    );
+  }
 }
 
-class _MyAppState extends State<MyApp> {
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 1;
   PageController controller = PageController();
 
@@ -29,7 +58,7 @@ class _MyAppState extends State<MyApp> {
     const ProfileScreen(),
   ];
 
-  void nextPage(index) {
+  void nextPage(int index) {
     setState(() {
       _currentIndex = index;
       controller.jumpToPage(index);
@@ -38,40 +67,35 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        scaffoldBackgroundColor: kSoftLightGray,
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        shape: const CircleBorder(),
+        onPressed: () {
+          nextPage(1);
+        },
+        backgroundColor:
+            Theme.of(context).floatingActionButtonTheme.backgroundColor,
+        child: Icon(
+          Icons.add,
+          size: 40,
+          color: Theme.of(context).floatingActionButtonTheme.foregroundColor,
+        ),
       ),
-      home: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          shape: CircleBorder(),
-          backgroundColor: kVibrantTeal,
-          onPressed: () {
-            nextPage(1);
-          },
-          child: Icon(
-            Icons.add,
-            color: _currentIndex == 1 ? Colors.black : kCharcoalGray,
-            size: 40,
-          ),
-        ),
-        resizeToAvoidBottomInset: false,
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        bottomNavigationBar: AnimatedBottomAppBar(
-          currentIndex: _currentIndex,
-          onTap: (index) {
-            setState(() => _currentIndex = index);
-            controller.jumpToPage(index);
-          },
-        ),
-        body: PageView.builder(
-          physics: const NeverScrollableScrollPhysics(),
-          controller: controller,
-          itemBuilder: (context, index) {
-            return _pages[_currentIndex];
-          },
-        ),
+      resizeToAvoidBottomInset: false,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: AnimatedBottomAppBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() => _currentIndex = index);
+          controller.jumpToPage(index);
+        },
+      ),
+      body: PageView.builder(
+        physics: const NeverScrollableScrollPhysics(),
+        controller: controller,
+        itemBuilder: (context, index) {
+          return _pages[_currentIndex];
+        },
       ),
     );
   }

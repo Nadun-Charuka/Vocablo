@@ -8,22 +8,25 @@ class AllColorsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Determine if the current theme is dark or light
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: kVibrantTeal, // Using color constant
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         title: Text(
           'Vocablo App',
           style: Theme.of(context).textTheme.titleLarge,
         ),
         leading: IconButton(
           icon: const Icon(Icons.menu),
-          color: kLightIndigo, // Using color constant
+          color: isDarkMode ? kDarkSecondaryColor : kLightSecondaryColor,
           onPressed: () {},
         ),
         actions: [
           IconButton(
             icon: const Icon(Icons.search),
-            color: kLightIndigo, // Using color constant
+            color: isDarkMode ? kDarkSecondaryColor : kLightSecondaryColor,
             onPressed: () {},
           ),
         ],
@@ -64,9 +67,14 @@ class AllColorsPage extends StatelessWidget {
           // **Links**
           GestureDetector(
             onTap: () {},
-            child: const Text(
+            child: Text(
               'Click here for more info',
-              style: TextStyle(color: kTealLink), // Using color constant
+              style: TextStyle(
+                color: isDarkMode
+                    ? kDarkLinkColor
+                    : kTealLink, // Using color constant
+                decoration: TextDecoration.underline,
+              ),
             ),
           ),
           const SizedBox(height: 20),
@@ -74,17 +82,26 @@ class AllColorsPage extends StatelessWidget {
           // **Warning Messages**
           Container(
             padding: const EdgeInsets.all(16.0),
-            color: kLightYellowWarning, // Using color constant
-            child: const Row(
+            color: isDarkMode
+                ? kDarkWarningColor
+                : kLightYellowWarning, // Using color constant
+            child: Row(
               children: [
-                Icon(Icons.warning,
-                    color: kWarningIconColor), // Using color constant
-                SizedBox(width: 8),
+                Icon(
+                  Icons.warning,
+                  color: isDarkMode
+                      ? kDarkWarningIconColor
+                      : kLightWarningIconColor, // Using color constant
+                ),
+                const SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     'This is a warning message',
                     style: TextStyle(
-                        color: kDarkSlateGray), // Using color constant
+                      color: isDarkMode
+                          ? kDarkSlateGray
+                          : kDarkSlateGray, // Adjust color as needed
+                    ),
                   ),
                 ),
               ],
@@ -94,7 +111,10 @@ class AllColorsPage extends StatelessWidget {
 
           // **Cards**
           Card(
-            color: kSoftLightGray, // Using color constant
+            color:
+                Theme.of(context).cardTheme.color, // Using theme's card color
+            elevation: Theme.of(context).cardTheme.elevation,
+            shape: Theme.of(context).cardTheme.shape,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -122,9 +142,11 @@ class AllColorsPage extends StatelessWidget {
               itemCount: 5,
               itemBuilder: (context, index) {
                 return ListTile(
-                  leading: const Icon(
+                  leading: Icon(
                     Icons.check_circle,
-                    color: kVibrantTeal, // Using color constant
+                    color: isDarkMode
+                        ? kDarkPrimaryColor
+                        : kVibrantTeal, // Using color constant
                   ),
                   title: Text(
                     'List Item ${index + 1}',
@@ -142,23 +164,30 @@ class AllColorsPage extends StatelessWidget {
 
           // **Progress Bar**
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'Loading...',
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               const SizedBox(height: 10),
-              const LinearProgressIndicator(
+              LinearProgressIndicator(
                 value: 0.5,
-                color: kVibrantTeal, // Using color constant
-                backgroundColor: kSoftLightGray, // Using color constant
+                color: isDarkMode
+                    ? kDarkPrimaryColor
+                    : kVibrantTeal, // Using color constant
+                backgroundColor: isDarkMode
+                    ? kDarkBackgroundColor
+                    : kSoftLightGray, // Using color constant
               ),
             ],
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: kVibrantTeal, // Using color constant
+        backgroundColor: isDarkMode
+            ? kDarkPrimaryButtonColor
+            : kVibrantTeal, // Using color constant
         child: const Icon(Icons.add),
         onPressed: () {},
       ),

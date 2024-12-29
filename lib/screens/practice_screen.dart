@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:vocablo_app/constants/alignment.dart';
 import 'package:vocablo_app/widgets/custom_appbar.dart';
+import 'package:vocablo_app/widgets/custom_sized_box.dart';
 import 'shared_state.dart'; // Import shared state
 
 class PracticeScreen extends StatefulWidget {
@@ -49,12 +51,12 @@ class _PracticeScreenState extends State<PracticeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppbar(),
-      body: Column(
-        children: [
-          // Search Bar
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
+      body: Padding(
+        padding: const EdgeInsets.all(kdefaultPadding),
+        child: Column(
+          children: [
+            // Search Bar
+            TextField(
               controller: _searchController,
               decoration: InputDecoration(
                 prefixIcon: const Icon(Icons.search),
@@ -64,59 +66,61 @@ class _PracticeScreenState extends State<PracticeScreen> {
                 ),
               ),
             ),
-          ),
-          // Filtered Translations List
-          Expanded(
-            child: ListView.builder(
-              controller: _scrollController,
-              itemCount: filteredTranslations.length,
-              itemBuilder: (context, index) {
-                final item = filteredTranslations[index];
-                return Card(
-                  color: Colors.grey.shade200,
-                  margin: const EdgeInsets.symmetric(vertical: 10),
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // Display the original and translated text
-                        Expanded(
-                          child: Text(
-                            "${item['original']} - ${item['translated']}",
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        // Copy to Clipboard Icon
-                        IconButton(
-                          onPressed: () {
-                            // Copy the text to clipboard
-                            Clipboard.setData(ClipboardData(
-                                text:
-                                    "${item['original']} - ${item['translated']}"));
-                            // Show a snackbar notification
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Text copied to clipboard!"),
-                                duration: Duration(seconds: 2),
+            CustomSizedBox1(),
+
+            // Filtered Translations List
+            Expanded(
+              child: ListView.builder(
+                controller: _scrollController,
+                itemCount: filteredTranslations.length,
+                itemBuilder: (context, index) {
+                  final item = filteredTranslations[index];
+                  return Card(
+                    color: Theme.of(context).cardTheme.color,
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // Display the original and translated text
+                          Expanded(
+                            child: Text(
+                              "${item['original']} - ${item['translated']}",
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,
                               ),
-                            );
-                          },
-                          icon: const Icon(Icons.copy, color: Colors.teal),
-                        ),
-                      ],
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          // Copy to Clipboard Icon
+                          IconButton(
+                            onPressed: () {
+                              // Copy the text to clipboard
+                              Clipboard.setData(ClipboardData(
+                                  text:
+                                      "${item['original']} - ${item['translated']}"));
+                              // Show a snackbar notification
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Text copied to clipboard!"),
+                                  duration: Duration(seconds: 2),
+                                ),
+                              );
+                            },
+                            icon: const Icon(Icons.copy, color: Colors.teal),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

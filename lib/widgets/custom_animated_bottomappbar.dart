@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:vocablo_app/constants/colors.dart';
 
 class AnimatedBottomAppBar extends StatefulWidget {
   final int currentIndex;
@@ -34,7 +33,7 @@ class _AnimatedBottomAppBarState extends State<AnimatedBottomAppBar> {
   Widget build(BuildContext context) {
     return BottomAppBar(
       //height: kBottomNavigationBarHeight,
-      color: kVibrantTeal,
+      color: Theme.of(context).appBarTheme.backgroundColor,
       shape: const CircularNotchedRectangle(),
       notchMargin: 8,
       child: Row(
@@ -48,7 +47,9 @@ class _AnimatedBottomAppBarState extends State<AnimatedBottomAppBar> {
               child: Icon(
                 Icons.menu_book,
                 size: 30,
-                color: widget.currentIndex == 0 ? Colors.black : kCharcoalGray,
+                color: widget.currentIndex == 0
+                    ? Colors.black
+                    : Theme.of(context).hintColor,
               ),
             ),
           ),
@@ -61,7 +62,9 @@ class _AnimatedBottomAppBarState extends State<AnimatedBottomAppBar> {
               child: Icon(
                 Icons.person_2,
                 size: 30,
-                color: widget.currentIndex == 2 ? Colors.black : kCharcoalGray,
+                color: widget.currentIndex == 2
+                    ? Colors.black
+                    : Theme.of(context).hintColor,
               ),
             ),
           ),
