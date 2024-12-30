@@ -1,10 +1,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:label="Vocablo"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
        
+
+        <!-- Add this inside the <application> tag -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_notification" />
+        <!-- If using a default color -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/notification_color" />
 
         <activity
             android:name=".MainActivity"

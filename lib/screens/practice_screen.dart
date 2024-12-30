@@ -6,6 +6,10 @@ import 'package:vocablo_app/widgets/custom_sized_box.dart';
 import 'shared_state.dart'; // Import shared state
 
 class PracticeScreen extends StatefulWidget {
+  final String payload;
+
+  PracticeScreen({required this.payload});
+
   @override
   _PracticeScreenState createState() => _PracticeScreenState();
 }
