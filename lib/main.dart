@@ -1,19 +1,22 @@
 // main.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:vocablo_app/constants/colors.dart';
 
 import 'package:vocablo_app/constants/theme.dart';
 import 'package:vocablo_app/screens/practice_screen.dart';
 import 'package:vocablo_app/screens/add_new_screen.dart';
 import 'package:vocablo_app/screens/profile_screen.dart';
 import 'package:vocablo_app/screens/shared_state.dart';
+
 import 'package:vocablo_app/widgets/custom_animated_bottomappbar.dart';
 
 import 'package:vocablo_app/widgets/theme_provider.dart'; // Import ThemeProvider
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await sharedState.loadFromLocalStorage(); // Load stored translations
   runApp(
     ChangeNotifierProvider(
@@ -32,6 +35,7 @@ class MyApp extends StatelessWidget {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
     return MaterialApp(
+      navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       theme: lightTheme, // Defined in theme.dart
       darkTheme: darkTheme, // Defined in theme.dart
@@ -53,7 +57,9 @@ class _MainScreenState extends State<MainScreen> {
   PageController controller = PageController();
 
   final List<Widget> _pages = [
-    PracticeScreen(),
+    PracticeScreen(
+
+    ),
     AddNewScreen(),
     const ProfileScreen(),
   ];
