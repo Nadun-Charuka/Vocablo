@@ -50,7 +50,7 @@ class _AddNewScreenState extends State<AddNewScreen> {
       String temp = _fromLanguage;
       _fromLanguage = _toLanguage;
       _toLanguage = temp;
-      _currentTranslatedWord = "";
+      _currentTranslatedWord = " ";
       _textController.clear();
     });
   }
@@ -58,7 +58,7 @@ class _AddNewScreenState extends State<AddNewScreen> {
   void _translateText(String text) async {
     if (text.isNotEmpty) {
       final translation = await _translator.translate(
-        text + "",
+        text + " ",
         from: _fromLanguage,
         to: _toLanguage,
       );

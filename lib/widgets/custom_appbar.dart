@@ -45,12 +45,12 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
         const SizedBox(
           width: 20,
         ),
-        Switch(
-          value: isDarkMode,
-          onChanged: (bool value) {
-            themeProvider.toggleTheme(value);
-          },
-        ),
+        // Switch(
+        //   value: isDarkMode,
+        //   onChanged: (bool value) {
+        //     themeProvider.toggleTheme(value);
+        //   },
+        // ),
       ],
     );
   }

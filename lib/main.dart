@@ -8,7 +8,7 @@ import 'package:vocablo_app/screens/add_new_screen.dart';
 import 'package:vocablo_app/screens/profile_screen.dart';
 import 'package:vocablo_app/screens/shared_state.dart';
 
-import 'package:vocablo_app/widgets/custom_animated_bottomappbar.dart';
+import 'package:vocablo_app/widgets/custom_bottomappbar.dart';
 
 import 'package:vocablo_app/widgets/theme_provider.dart'; // Import ThemeProvider
 
@@ -57,9 +57,7 @@ class _MainScreenState extends State<MainScreen> {
   PageController controller = PageController();
 
   final List<Widget> _pages = [
-    PracticeScreen(
-
-    ),
+    PracticeScreen(),
     AddNewScreen(),
     const ProfileScreen(),
   ];
@@ -89,7 +87,7 @@ class _MainScreenState extends State<MainScreen> {
       ),
       resizeToAvoidBottomInset: false,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: AnimatedBottomAppBar(
+      bottomNavigationBar: SimpleBottomAppBar(
         currentIndex: _currentIndex,
         onTap: (index) {
           setState(() => _currentIndex = index);
