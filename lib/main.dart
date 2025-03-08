@@ -8,8 +8,6 @@ import 'package:vocablo_app/screens/add_new_screen.dart';
 import 'package:vocablo_app/screens/profile_screen.dart';
 import 'package:vocablo_app/screens/shared_state.dart';
 
-import 'package:vocablo_app/widgets/custom_bottomappbar.dart';
-
 import 'package:vocablo_app/widgets/theme_provider.dart'; // Import ThemeProvider
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -54,18 +52,10 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 1;
-  PageController controller = PageController();
 
-  final List<Widget> _pages = [
-    PracticeScreen(),
-    AddNewScreen(),
-    const ProfileScreen(),
-  ];
-
-  void nextPage(int index) {
+  void _onTap(int index) {
     setState(() {
       _currentIndex = index;
-      controller.jumpToPage(index);
     });
   }
 
@@ -75,32 +65,64 @@ class _MainScreenState extends State<MainScreen> {
       floatingActionButton: FloatingActionButton(
         shape: const CircleBorder(),
         onPressed: () {
-          nextPage(1);
+          _onTap(1);
         },
         backgroundColor:
             Theme.of(context).floatingActionButtonTheme.backgroundColor,
         child: Icon(
           Icons.add,
           size: 40,
-          color: Theme.of(context).floatingActionButtonTheme.foregroundColor,
+          color:
+              _currentIndex == 1 ? Colors.black : Theme.of(context).hintColor,
         ),
       ),
       resizeToAvoidBottomInset: false,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: SimpleBottomAppBar(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() => _currentIndex = index);
-          controller.jumpToPage(index);
-        },
+      bottomNavigationBar: BottomAppBar(
+        notchMargin: 10,
+        shape: CircularNotchedRectangle(),
+        height: 70,
+        color: Theme.of(context).appBarTheme.backgroundColor,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _buildNavItem(Icons.menu_book, 0),
+            SizedBox(
+              width: 60,
+            ),
+            _buildNavItem(Icons.person, 2)
+          ],
+        ),
       ),
-      body: PageView.builder(
-        physics: const NeverScrollableScrollPhysics(),
-        controller: controller,
-        itemBuilder: (context, index) {
-          return _pages[_currentIndex];
-        },
+      body: IndexedStack(
+        index: _currentIndex, // Keeps all screens in memory
+        children: [
+          PracticeScreen(),
+          AddNewScreen(),
+          const ProfileScreen(),
+        ],
       ),
+    );
+  }
+
+  Widget _buildNavItem(IconData icon, int index) {
+    return IconButton(
+      icon: Padding(
+        padding: const EdgeInsets.only(
+          left: 10,
+          right: 10,
+          top: 5,
+          bottom: 5,
+        ),
+        child: Icon(
+          icon,
+          size: 30,
+          color: index == _currentIndex
+              ? Colors.black
+              : Theme.of(context).hintColor,
+        ),
+      ),
+      onPressed: () => _onTap(index),
     );
   }
 }

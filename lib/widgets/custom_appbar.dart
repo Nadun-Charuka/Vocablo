@@ -1,8 +1,6 @@
 // lib/widgets/custom_appbar.dart
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:vocablo_app/widgets/theme_provider.dart';
 // Import the colors.dart file
 
 class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
@@ -10,8 +8,8 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
-    bool isDarkMode = themeProvider.themeMode == ThemeMode.dark;
+    //final themeProvider = Provider.of<ThemeProvider>(context);
+    //bool isDarkMode = themeProvider.themeMode == ThemeMode.dark;
     // Access the current theme's AppBarTheme
     final appBarTheme = Theme.of(context).appBarTheme;
     // Access the current theme's iconTheme
