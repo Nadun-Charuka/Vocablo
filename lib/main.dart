@@ -1,5 +1,7 @@
 // main.dart
 import 'package:flutter/material.dart';
+
+import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
 
 import 'package:vocablo_app/constants/theme.dart';
@@ -14,11 +16,13 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  await Hive.openBox('settings'); // Open a Hive box for theme settings
 
   await sharedState.loadFromLocalStorage(); // Load stored translations
   runApp(
     ChangeNotifierProvider(
-      create: (_) => ThemeProvider(),
+      create: (context) => ThemeProvider(),
       child: const MyApp(),
     ),
   );
@@ -35,9 +39,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
-      theme: lightTheme, // Defined in theme.dart
-      darkTheme: darkTheme, // Defined in theme.dart
-      themeMode: themeProvider.themeMode, // Managed by ThemeProvider
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      themeMode: themeProvider.themeMode, // Dynamically applied theme mode
+
       home: const MainScreen(),
     );
   }
@@ -99,7 +104,7 @@ class _MainScreenState extends State<MainScreen> {
         children: [
           PracticeScreen(),
           AddNewScreen(),
-          const ProfileScreen(),
+          const SettingsScreen(),
         ],
       ),
     );
