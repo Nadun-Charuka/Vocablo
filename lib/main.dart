@@ -99,14 +99,11 @@ class _MainScreenState extends State<MainScreen> {
           ],
         ),
       ),
-      body: IndexedStack(
-        index: _currentIndex, // Keeps all screens in memory
-        children: [
-          PracticeScreen(),
-          AddNewScreen(),
-          const SettingsScreen(),
-        ],
-      ),
+      body: _currentIndex == 0
+          ? PracticeScreen()
+          : _currentIndex == 1
+              ? AddNewScreen()
+              : SettingsScreen(),
     );
   }
 
